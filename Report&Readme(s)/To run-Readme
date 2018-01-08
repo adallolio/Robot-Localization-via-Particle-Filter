@@ -1,0 +1,102 @@
+LAS PROJECT - ALBERTO DALLOLIO
+
+To run:
+
+1) 	robot=Robot()                 crea l'oggetto robot della classe Robot
+
+robot = 
+
+Robot with properties:
+
+x: []
+x_n: []
+x0: [3x1 double]
+x_past: []
+x_past_n: []
+dim: 0.2000
+l: 1
+steerlim: 0.6000
+maxspeed: 4
+odometry: []
+odometry_n: []
+V: [0.0013 0.0028 9.5288e-04]
+dt: 0.1000
+driver: []
+
+
+
+2) 	map=Map(50,30)     			crea l'oggetto map della classe Map: map è una mappa
+								di dimensione [-50,50] con 30 landmark di classe (colore) random tra 1, 2 e 3 (blu, ciano e rosso).
+
+map = 
+
+Map with properties:
+
+map: [2x30 double]
+dim: 50
+num: 30
+colors: []
+
+map.plot() 						plotta la mappa coi landmark e i colori scelti random
+
+
+
+3) 	robot.calldriver(Path(map.dim,'speed',3))     	chiama la funzione che muove il robot, 																	passandogli il Path della dimensione 																	voluta (ha senso quella della mappa) e 																	la velocità voluta (se non specificata:																	speed=1, comunque maxspeed=4).
+
+
+
+4)	sensor=BearingSensor(robot,map,180)				crea l'oggetto sensor della classe 																		BearingSensor che riconosce i limiti																	della mappa e stabilisce l'angolo																		limite del sensore per vedere i landmarks.	
+
+sensor = 
+
+BearingSensor with properties:
+
+W: [0.0100 3.0462e-04]
+theta_lim: [-180 180]
+map: []
+randstream: [1x1 RandStream]
+num_readings: 0
+
+
+5) robot.run_rand(500,map,sensor)	 lancia una simulazione in cui il robot si muove in modo 									  			 random. Il percorso è stabilito dalla classe Path che 
+									 grazie a randstream genera uno stream di punti random secondo un modello prestabilito (serie di Fibonacci). Il robot compie un percorso di tot punti scelti ed ogni volta che si avvicina ad un punto genera i controlli per raggiungere il punto successiso. 500 è il numero di steps totali della simulazione e map/sensor sono gli oggetti creati prima. Nell'editor vengono plottati i goal temporanei (cioè i waypoints raggiunti), i colori dei landmark letti dal sensore e l'odometria (=ans), una matrice di 500x3.
+
+[p,z]=robot.run_rand(500,map,sensor) 		fa le stesse identiche cose ma in più stampa 															nell'editor p e z: p è di nuovo l'odometria, z è 										     			la matrice delle misure del sensore (l'angolo tra 											   			i landmark e il robot in quello step). z sarà 															dunque una matrice numsteps x numlandmarks, in 															questo caso una 500x30.
+
+6) robot.run_chosen(10)						è una funzione che permette all'utente di inserire											  			(in questo caso) 10 punti col cursore 																	(manualmente). Una volta inseriti il robot
+											percorre la traiettoria un punto dopo l'altro nell'ordine di inserimento, calcolando i controlli per raggiungerli. Il numero di step è calcolato da un'apposita funzione che considera la velocità del robot (definita con Path) e il numero di punti inseriti. Ho dovuto creare questa funzione sennò il robot passava più di una volta su un punto prima di andare al successivo. Con questo calcolo funziona precisamente. ans=odometria.
+
+
+
+7) robot.run_sim(10,3,0.1)					è una funzione che lancia una precisa 																	simulazione.
+											precisa nel senso che viene specificato dall'utente il tempo (10), la velocità (3) e lo steer (0.1). Con questi numeri il robot compie una traiettoria circolare con velocità 3. 
+
+
+robot.run_sim(10,[1 3],[0.1 -0.1],2/3)		è simile alla precedente ma l'utente può 																decidere che a 2/3 della simulazione la velocità														cambia da 1 a 3 e la sterzata da 0.1 a -0.1. 															Dopo 2/3 (per esempio) della simulazione il 															robot aumenta velocità e inverte l'angolo di 															curvatura.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
